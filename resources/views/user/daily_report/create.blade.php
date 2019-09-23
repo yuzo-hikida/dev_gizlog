@@ -19,7 +19,7 @@
       </div>
       <div class="form-group">
         <!-- <textarea class="form-control" placeholder="Content" name="contents" cols="50" rows="10"></textarea> -->
-        {!! Form::textarea('contents', null, ['class' => 'form-control', 'placeholder' => 'content']) !!}
+        {!! Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'content']) !!}
         <span class="help-block"></span>
       </div>
       <!-- <button type="submit" class="btn btn-success pull-right">Add</button> -->
