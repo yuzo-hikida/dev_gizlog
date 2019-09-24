@@ -24,11 +24,19 @@ class DailyReportRequest extends FormRequest
     public function rules()
     {
         //
+        return [
+            'title'   => 'required',
+            'content' => 'required',
+        ];
     }
   
     public function messages()
     {
         //
+        return[
+            'title.required'   => '入力必須項目です。',
+            'content.required' => '入力必須項目です。',
+        ];
     }
 }
 

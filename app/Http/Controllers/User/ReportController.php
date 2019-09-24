@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Report;
 use Auth;
+use App\Http\Requests\User\DailyReportRequest;
 
 class ReportController extends Controller
 {
@@ -24,21 +25,15 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        // $reports = $this->report->getByUserId(Auth::id());
-        // return view('user.daily_report.index', compact('reports'));
-
-        // dd($request);
-            $select = $request->search_month;
-            // dd($select);
+        //
+        $select = $request->search_month;
         if (!empty($select))
         {
             $reports = $this->report->getByReportingTime($select, Auth::id());
-            // dd($reports);
-            // $request->session()->flash('message', "$select");
+            $request->session()->flash('message', "$select");
             return view('user.daily_report.index', compact('reports'));
         } else {
             $reports = $this->report->getByUserId(Auth::id());
-            // dd($reports);
             return view('user.daily_report.index', compact('reports'));
         }
     }
@@ -60,13 +55,11 @@ class ReportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DailyReportRequest $request)
     {
         //
-        // dd($request);
         $input= $request->all();
         $input['user_id'] = Auth::id();
-        // dd($input);
         $this->report->fill($input)->save();
         return redirect()->route('report.index');
     }
@@ -94,7 +87,6 @@ class ReportController extends Controller
     {
         //
         $report = $this->report->find($id);
-        // dd($report);
         return view('user.daily_report.edit', compact('report'));
     }
 
@@ -105,12 +97,10 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DailyReportRequest $request, $id)
     {
         //
-        // dd($id);
         $input = $request->all();
-        // dd($input);
         $this->report->find($id)->fill($input)->save();
         return redirect()->route('report.index');
     }
@@ -124,7 +114,6 @@ class ReportController extends Controller
     public function destroy($id)
     {
         //
-        // dd($id);
         $this->report->find($id)->delete();
         return redirect()->route('report.index');
     }

@@ -6,8 +6,9 @@
   <div class="btn-wrapper daily-report">
     <!-- <form> -->
     {!! Form::open(['route' => 'report.index', 'method' => 'GET']) !!}
-      <input class="form-control" name="search_month" type="month">
-      <button type="submit" class="btn btn-icon"><i class="fa fa-search"></i></button>
+      <input class="form-control" name="search_month" type="month" value = "{{ session('message') }}">
+      <!-- <button type="submit" class="btn btn-icon"><i class="fa fa-search"></i></button> -->
+      {!! Form::button('<i class="fa fa-search"></i>', ['type' => 'submit', 'class' => 'btn btn-icon']) !!}
     <!-- </form> -->
     {!! Form::close() !!}
     <a class="btn btn-icon" href="/report/create"><i class="fa fa-plus"></i></a>

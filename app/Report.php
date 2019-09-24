@@ -31,7 +31,6 @@ class Report extends Model
 
     public function getByReportingTime($select, $id)
     {
-        // dd($select);
         return $this->where('reporting_time', 'like', "%{$select}%")->where('user_id', $id)->get();
     }
 
