@@ -13,9 +13,9 @@ class DailyReportRequest extends FormRequest
      */
     public function authorize()
     {
-      return true;
+        return true;
     }
-  
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +29,7 @@ class DailyReportRequest extends FormRequest
             'content' => 'required',
         ];
     }
-  
+
     public function messages()
     {
         //
