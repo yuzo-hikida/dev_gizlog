@@ -31,11 +31,10 @@ class ReportController extends Controller
         {
             $reports = $this->report->getByReportingTime($select, Auth::id());
             $request->session()->flash('message', "$select");
-            return view('user.daily_report.index', compact('reports'));
         } else {
             $reports = $this->report->getByUserId(Auth::id());
-            return view('user.daily_report.index', compact('reports'));
         }
+        return view('user.daily_report.index', compact('reports'));
     }
 
     /**
