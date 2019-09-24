@@ -10,11 +10,11 @@
           {!! Form::date('reporting_time', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
           <span class="help-block"></span>
         </div>
-        <div class="form-group @if(!empty($errors->first('title'))) has-error @endif">
+        <div class="form-group @if (!empty($errors->first('title'))) has-error @endif">
           {!! Form::input('text', 'title', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
           <span class="help-block">{{ $errors->first('title') }}</span>
         </div>
-        <div class="form-group @if(!empty($errors->first('content'))) has-error @endif">
+        <div class="form-group @if (!empty($errors->first('content'))) has-error @endif">
           {!! Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'content']) !!}
           <span class="help-block">{{ $errors->first('content') }}</span>
         </div>
