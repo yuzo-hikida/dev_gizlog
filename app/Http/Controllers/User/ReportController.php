@@ -28,15 +28,17 @@ class ReportController extends Controller
         // return view('user.daily_report.index', compact('reports'));
 
         // dd($request);
-            $select = $request->input('search-month');
+            $select = $request->search_month;
             // dd($select);
-        if (empty($select))
+        if (!empty($select))
         {
-            $reports = $this->report->getByUserId(Auth::id());
+            $reports = $this->report->getByReportingTime($select, Auth::id());
+            // dd($reports);
+            // $request->session()->flash('message', "$select");
             return view('user.daily_report.index', compact('reports'));
         } else {
-            $reports = $this->report->getByReportingTime($select);
-            dd($reports);
+            $reports = $this->report->getByUserId(Auth::id());
+            // dd($reports);
             return view('user.daily_report.index', compact('reports'));
         }
     }
