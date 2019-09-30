@@ -24,14 +24,13 @@ class Report extends Model
         'user_id',
     ];
 
-    public function getByUserId($id)
+    public function getByDailyReports($request, $id)
     {
-        return $this->where('user_id', $id)->get();
-    }
-
-    public function getByReportingTime($select, $id)
-    {
-        return $this->where('reporting_time', 'like', "%{$select}%")->where('user_id', $id)->get();
+        $builder = $this->where('user_id', $id);
+        if (!empty($request['search_month'])){
+            $builder->where('reporting_time', 'like', '%'.$request['search_month'].'%');
+        }
+        return $builder->orderBy('reporting_time', 'desc')->get();
     }
 
 }

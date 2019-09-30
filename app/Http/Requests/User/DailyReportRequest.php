@@ -23,19 +23,20 @@ class DailyReportRequest extends FormRequest
      */
     public function rules()
     {
-        //
         return [
-            'title'   => 'required',
-            'content' => 'required',
+            'title'   => 'required|max:30',
+            'content' => 'required|max:1000',
+            'reporting_time'  => 'required|date|before:tomorrow',
         ];
     }
 
     public function messages()
     {
-        //
         return[
-            'title.required'   => '入力必須項目です。',
-            'content.required' => '入力必須項目です。',
+            'required'    => '入力必須項目です。',
+            'before'      => '今日以前の日付を設定してください。',
+            'title.max'   => '30文字以内で入力してください。',
+            'content.max' => '1000文字以内で入力してください。',
         ];
     }
 }

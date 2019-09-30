@@ -5,13 +5,12 @@
   <div class="main-wrap">
     <div class="container">
       {!! Form::open(['route' => 'report.store']) !!}
-        {!! Form::hidden('user_id', 'null', ['class' => 'form-control']) !!}
-        <div class="form-group form-size-small">
-          {!! Form::date('reporting_time', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
-          <span class="help-block"></span>
+        <div class="form-group form-size-small @if (!empty($errors->first('reporting_time'))) has-error @endif">
+          {!! Form::date('reporting_time', $now = now(), ['class' => 'form-control']) !!}
+          <span class="help-block">{{ $errors->first('reporting_time') }}</span>
         </div>
         <div class="form-group @if (!empty($errors->first('title'))) has-error @endif">
-          {!! Form::input('text', 'title', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
+          {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
           <span class="help-block">{{ $errors->first('title') }}</span>
         </div>
         <div class="form-group @if (!empty($errors->first('content'))) has-error @endif">
