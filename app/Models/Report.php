@@ -21,7 +21,7 @@ class Report extends Model
 
     /**
      * $requestに値が入っていなかったらuser_idと＄idが一致するレコードを全件取得
-     * $request['search_month']に値入っていたら指定された年月が入っているレコードのみ取得
+     * $request['search_month']に値入っていたら、user_idと＄idが一致するレコードを全件取得した後、指定された年月が入っているレコードを絞り込み取得
      */
     public function getByUserRecords($allRequest, $id)
     {
