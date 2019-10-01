@@ -24,7 +24,12 @@ class Report extends Model
         'user_id',
     ];
 
-    public function getByDailyReports($request, $id)
+    /**
+     * $requestに値が入っていなかったらuser_idと＄idが一致するレコードを全件取得
+     * $request['search_month']に値入っていたら指定された年月が入っているレコードのみ取得
+     */
+
+    public function getByUserRecords($request, $id)
     {
         $builder = $this->where('user_id', $id);
         if (!empty($request['search_month'])){

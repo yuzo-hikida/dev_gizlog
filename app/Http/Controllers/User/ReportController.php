@@ -16,14 +16,14 @@ class ReportController extends Controller
     {
         $this->report = $reportModel;
     }
-/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $reports = $this->report->getByDailyReports($request, Auth::id());
+        $reports = $this->report->getByUserRecords($request, Auth::id());
         $request->session()->flash('message', $request['search_month']);
         return view('user.daily_report.index', compact('reports'));
     }
@@ -41,8 +41,8 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  App\Http\Requests\User\DailyReportRequest  $request
+     * @return App\Http\Requests\User\DailyReportRequest
      */
     public function store(DailyReportRequest $request)
     {
@@ -79,13 +79,15 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\User\DailyReportRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Requests\User\DailyReportRequest
      */
     public function update(DailyReportRequest $request, $id)
     {
         $input = $request->all();
+        $input['user_id'] = Auth::id();
+        dd($input);
         $this->report->find($id)->fill($input)->save();
         return redirect()->route('report.index');
     }

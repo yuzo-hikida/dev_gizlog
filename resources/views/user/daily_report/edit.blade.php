@@ -5,7 +5,6 @@
 <div class="main-wrap">
   <div class="container">
     {!! Form::open(['route' => ['report.update', $report->id], 'method' => 'PUT']) !!}
-      {!! Form::hidden('user_id', 4, ['class' => 'form-control'])!!}
       <div class="form-group form-size-small">
         {!! Form::date('reporting_time', $report->reporting_time, ['class' => 'form-control']) !!}
       <span class="help-block"></span>
