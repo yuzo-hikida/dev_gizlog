@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    //
+    use softDeletes;
+
+    protected $fillable = [
+        'user_id',
+        'question_id',
+        'comment'
+    ];
 }

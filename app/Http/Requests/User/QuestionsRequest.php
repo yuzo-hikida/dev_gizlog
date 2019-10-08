@@ -23,12 +23,19 @@ class QuestionsRequest extends FormRequest
      */
     public function rules()
     {
-        //
+        return [
+            'tag_category_id' => 'required',
+            'title'           => 'required',
+            'content'         => 'required',
+        ];
     }
 
     public function messages()
     {
-        //
+        return [
+            'tag_category_id.required' => '選択してください。',
+            'required'                 => '入力必須項目です。',
+        ];
     }
 }
 
