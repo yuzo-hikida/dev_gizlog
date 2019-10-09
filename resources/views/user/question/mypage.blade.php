@@ -1,8 +1,7 @@
 @extends ('common.user')
 @section ('content')
-
 <h2 class="brand-header">
-  <img src="" class="avatar-img">&nbsp;&nbsp;My page
+  <img src="{{ $user->avatar }}" class="avatar-img">&nbsp;&nbsp;My page
 </h2>
 <div class="main-wrap">
   <div class="content-wrapper table-responsive">
@@ -18,13 +17,14 @@
         </tr>
       </thead>
       <tbody>
+      @foreach($myRecords as $myRecord)
         <tr class="row">
-          <td class="col-xs-2"></td>
-          <td class="col-xs-1"></td>
-          <td class="col-xs-5"></td>
-          <td class="col-xs-2"><span class="point-color"></span></td>
+          <td class="col-xs-2">{{ $myRecord->updated_at->format('Y-m-d') }}</td>
+          <td class="col-xs-1">{{ $myRecord->tagcategory->name }}</td>
+          <td class="col-xs-5">{{ mb_strimwidth($myRecord->title, 0, 50, '...', 'UTF-8') }}</td>
+          <td class="col-xs-2"><span class="point-color">{{ $myRecord->comments->count() }}</span></td>
           <td class="col-xs-1">
-            <a class="btn btn-success" href="">
+            <a class="btn btn-success" href="{{ route('question.edit', $myRecord->id)}}">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
@@ -36,6 +36,7 @@
             </form>
           </td>
         </tr>
+        @endforeach
       </tbody>
     </table>
   </div>

@@ -50,10 +50,9 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(QuestionsRequest $request)
+    public function store(Request $request)
     {
         $inputs = $request->all();
-        // dd($inputs);
         $this->question->create($inputs);
         return redirect()->to('question');
     }
@@ -66,7 +65,6 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        // dd(123);
         return view('user.question.show');
     }
 
@@ -74,11 +72,15 @@ class QuestionController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return
      */
     public function edit($id)
     {
-        //
+        $changeValue = $this->question->selectMyRecord($id);
+        // dd($changeValue);
+        // $change = $changeValue->find($id);
+        // dd($change);
+        return view('user.question.edit', compact('changeValue'));
     }
 
     /**
@@ -90,7 +92,10 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $editRecord = $request->all();
+        $this->question->find($id)->fill($editRecord)->save();
+        return redirect()->to('question');
+
     }
 
     /**
@@ -114,7 +119,23 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $input = $inputs['tag_category_id'];
+        $confirm = $inputs['confirm'];
         $tagCategoryName = tagCategory::find($input);
-        return view('user.question.confirm', compact('inputs', 'tagCategoryName'));
+        // dd($tagCategoryName);
+        return view('user.question.confirm', compact('inputs', 'tagCategoryName', 'confirm'));
     }
+
+/**
+     * mypage a newly created resource in storage.
+     *
+     * @param
+     * @return
+     */
+    public function mypage($id)
+    {
+        $user = Auth::user();
+        $myRecords = $this->question->selectMyRecords($id);
+        return view('user.question.mypage', compact('myRecords', 'user'));
+    }
+
 }
