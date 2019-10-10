@@ -53,9 +53,11 @@ class Question extends Model
 
     public function selectMyRecord($id)
     {
+        // dd($id);
         if (!empty($id)) {
             $myRecords = $this->where('id', $id)->first();
         }
         return $myRecords;
     }
+
 }

@@ -24,16 +24,18 @@
           <td class="col-xs-5">{{ mb_strimwidth($myRecord->title, 0, 50, '...', 'UTF-8') }}</td>
           <td class="col-xs-2"><span class="point-color">{{ $myRecord->comments->count() }}</span></td>
           <td class="col-xs-1">
-            <a class="btn btn-success" href="{{ route('question.edit', $myRecord->id)}}">
+            <a class="btn btn-success" href="{{ route('question.edit', $myRecord->id) }}">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
           <td class="col-xs-1">
-            <form>
+            <!-- <form> -->
+            {!! Form::open(['route' => ['question.destroy', $myRecord->id], 'method' => 'DELETE'])!!}
               <button class="btn btn-danger" type="submit">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </button>
-            </form>
+            <!-- </form> -->
+            {!! form::close() !!}
           </td>
         </tr>
         @endforeach

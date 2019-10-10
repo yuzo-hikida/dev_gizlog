@@ -7,19 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\QuestionsRequest;
 use App\Models\Question;
 use App\Models\TagCategory;
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
 class QuestionController extends Controller
 {
     protected $question;
-    protected $tagCategory;
+    protected $comment;
 
-    public function __construct(Question $question,  TagCategory $tagCategory)
+    public function __construct(Question $question,  Comment $comment)
     {
         $this->middleware('auth');
         $this->question = $question;
-        $this->tagCategory = $tagCategory;
+        $this->comment = $comment;
     }
     /**
      * Display a listing of the resource.
@@ -65,7 +67,12 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        return view('user.question.show');
+        $showQuestion = $this->question->selectMyRecord($id);
+        $tagCategoryId = $showQuestion['tag_category_id'];
+        $tagCategoryName = tagCategory::find($tagCategoryId);
+        $comments = $this->comment->selectComment($id);
+        // dd($showQuestion);
+        return view('user.question.show',compact('showQuestion', 'tagCategoryName','comments'));
     }
 
     /**
@@ -77,9 +84,6 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $changeValue = $this->question->selectMyRecord($id);
-        // dd($changeValue);
-        // $change = $changeValue->find($id);
-        // dd($change);
         return view('user.question.edit', compact('changeValue'));
     }
 
@@ -106,7 +110,10 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // $this->comment->searchCommentsOfQuestion($id)->delete();
+        $this->comment->searchCommentsOfQuestion($id)->delete();
+        $this->question->find($id)->delete();
+        return redirect()->to('question');
     }
 
     /**
@@ -137,5 +144,19 @@ class QuestionController extends Controller
         $myRecords = $this->question->selectMyRecords($id);
         return view('user.question.mypage', compact('myRecords', 'user'));
     }
+
+    /**
+     * commentStore a newly created resource in storage.
+     *
+     * @param  app\Http\Requests\User\QuestionsRequest;  $request
+     * @return app\Http\Requests\User\QuestionsRequest
+     */
+    public function commentStore(QuestionsRequest $request ,$id)
+    {
+        $inputs = $request->all();
+        $this->comment->create($inputs);
+        return redirect()->to('question/'.$id);
+    }
+
 
 }

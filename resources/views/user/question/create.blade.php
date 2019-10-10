@@ -4,7 +4,7 @@
 <h2 class="brand-header">質問投稿</h2>
 <div class="main-wrap">
   <div class="container">
-    {!! Form::open(['route' => 'question.confirm', 'method' => 'GET'])!!}
+    {!! Form::open(['route' => ['question.confirm'], 'method' => 'GET'])!!}
       <div class="form-group  @if(!empty($errors->first('tag_category_id'))) has-error @endif">
         <!-- <select name='tag_category_id' class = "form-control selectpicker form-size-small" id="pref_id"> -->
         {!! Form::select('tag_category_id',[
@@ -31,8 +31,7 @@
         <span class="help-block">{{ $errors->first('content') }}</span>
       </div>
       <input name="confirm" class="btn btn-success pull-right" type="submit" value="create">
-      <!-- {!! Form::submit('create', ['class' => 'btn btn-success pull-right']) !!}
-    {!! Form::close() !!} -->
+    {!! Form::close() !!}
   </div>
 </div>
 
