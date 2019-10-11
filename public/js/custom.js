@@ -5,6 +5,7 @@ $(function(){
     var category_id = $(this).attr('id');
     $('#category-val').val(category_id);
     $('#select-question').submit();
+  });
 
   // Admin個別勤怠作成
   $('.date-form input').on('change', function(){
