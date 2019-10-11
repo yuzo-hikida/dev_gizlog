@@ -5,7 +5,7 @@
 <div class="main-wrap">
   <div class="panel panel-success">
     <div class="panel-heading">
-      <img src="@if(empty($showQuestion->user->avatar)) http://i.imgur.com/xdKJoqa.jpg @endif {{$showQuestion->user->avatar}}" class="avatar-img">
+      <img src="@if(empty($showQuestion->user->avatar)) http://acbio2.acbio.u-fukui.ac.jp/gousei/img/image5.png @endif {{$showQuestion->user->avatar}}" class="avatar-img">
       <p>{{ $showQuestion->user->name }}&nbsp;さんの質問&nbsp;&nbsp;({{ $tagCategoryName->name }}&nbsp;&nbsp;)&nbsp;&nbsp;{{ $showQuestion->updated_at->format('Y-m-d H:i') }}</p>
       <p class="question-date"></p>
     </div>
@@ -28,7 +28,7 @@
     <div class="comment-list">
         <div class="comment-wrap">
           <div class="comment-title">
-            <img src="@if(empty($showQuestion->user->avatar)) http://i.imgur.com/xdKJoqa.jpg @endif {{$showQuestion->user->avatar}}" class="avatar-img">
+            <img src="@if(empty($showQuestion->user->avatar)) http://acbio2.acbio.u-fukui.ac.jp/gousei/img/image5.png @endif {{$showQuestion->user->avatar}}" class="avatar-img">
             <p>{{ $showQuestion->user->name }}</p>
             <p class="comment-date">{{ $comment->created_at->format('Y-m-d H:i') }}</p>
           </div>

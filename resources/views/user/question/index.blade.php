@@ -37,7 +37,7 @@
       <tbody>
       @foreach($questions as $question)
         <tr class="row">
-          <td class="col-xs-1"><img src="@if(empty($question->user->avatar)) http://i.imgur.com/xdKJoqa.jpg @endif {{$question->user->avatar}}" class="avatar-img"></td>
+          <td class="col-xs-1"><img src="@if(empty($question->user->avatar)) http://acbio2.acbio.u-fukui.ac.jp/gousei/img/image5.png @endif {{$question->user->avatar}}" class="avatar-img"></td>
           <td class="col-xs-2">{{ $question->tagCategory->name }}</td>
           <td class="col-xs-6">{{ mb_strimwidth($question->title, 0, 50, '...', 'UTF-8') }}</td>
           <td class="col-xs-1"><span class="point-color">{{ $question->comments->count() }}</span></td>
