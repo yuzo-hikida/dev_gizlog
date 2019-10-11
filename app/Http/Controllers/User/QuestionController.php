@@ -23,6 +23,7 @@ class QuestionController extends Controller
         $this->question = $question;
         $this->comment = $comment;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,9 +31,9 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        // $userId = Auth::id();
         $inputs = $request->all();
         $questions = $this->question->getQuestionRecord($inputs);
+        $request->flashOnly(['search_word']);
         return view('user.question.index', compact('questions'));
     }
 
@@ -71,12 +72,11 @@ class QuestionController extends Controller
         $tagCategoryId = $showQuestion['tag_category_id'];
         $tagCategoryName = tagCategory::find($tagCategoryId);
         $comments = $this->comment->selectComment($id);
-        // dd($showQuestion);
         return view('user.question.show',compact('showQuestion', 'tagCategoryName','comments'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * edit the form for editing the specified resource.
      *
      * @param  int  $id
      * @return
@@ -99,7 +99,6 @@ class QuestionController extends Controller
         $editRecord = $request->all();
         $this->question->find($id)->fill($editRecord)->save();
         return redirect()->to('question');
-
     }
 
     /**
@@ -110,7 +109,6 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        // $this->comment->searchCommentsOfQuestion($id)->delete();
         $this->comment->searchCommentsOfQuestion($id)->delete();
         $this->question->find($id)->delete();
         return redirect()->to('question');
@@ -128,11 +126,10 @@ class QuestionController extends Controller
         $input = $inputs['tag_category_id'];
         $confirm = $inputs['confirm'];
         $tagCategoryName = tagCategory::find($input);
-        // dd($tagCategoryName);
         return view('user.question.confirm', compact('inputs', 'tagCategoryName', 'confirm'));
     }
 
-/**
+    /**
      * mypage a newly created resource in storage.
      *
      * @param
@@ -157,6 +154,4 @@ class QuestionController extends Controller
         $this->comment->create($inputs);
         return redirect()->to('question/'.$id);
     }
-
-
 }

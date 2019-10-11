@@ -4,7 +4,7 @@ $(function(){
   $('.category-wrap .btn').on('click', function(){
     var category_id = $(this).attr('id');
     $('#category-val').val(category_id);
-    $('form').submit();
+    $('#select-question').submit(); //formタグがデバックformタグを優先していますのでclassかIDを指定してあげる。
   });
 
   // Admin個別勤怠作成

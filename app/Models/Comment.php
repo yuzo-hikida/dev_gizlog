@@ -31,7 +31,6 @@ class Comment extends Model
 
     public function scopeSearchCommentsOfQuestion($query, $id)
     {
-        dd($query);
         return $query->where('question_id', $id);
     }
 }

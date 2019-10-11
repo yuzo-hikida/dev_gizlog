@@ -35,29 +35,62 @@ class Question extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
+/**
+ * 質問一覧で表示するために、それぞれ絞り込みをしてレコードを取得。
+ */
     public function getQuestionRecord($questions)
     {
-        if (empty($questions)) {
-            $questionRecords = Question::orderBy('updated_at', 'desc')->get();
-            return $questionRecords;
-        }
+            return $this->searchTitle($questions)
+                        ->searchTagCategoryId($questions)
+                        ->orderBy('updated_at', 'desc')
+                        ->with(['tagCategory', 'user', 'comments'])
+                        ->get();
     }
 
+    /**
+     * mypageにて自分が投稿したquestionのレコード取得。
+     */
     public function selectMyRecords($id)
     {
         if (!empty($id)) {
-            $myRecords = $this->where('user_id', $id)->get();
+            $myRecords = $this->where('user_id', $id)
+            ->with(['tagCategory', 'user', 'comments'])
+            ->get();
         }
         return $myRecords;
     }
 
+    /**
+     * 変更したいquestionのレコードを１つ取得。
+     */
     public function selectMyRecord($id)
     {
-        // dd($id);
         if (!empty($id)) {
-            $myRecords = $this->where('id', $id)->first();
+            $myRecords = $this->where('id', $id)
+            ->with(['tagCategory', 'user', 'comments'])
+            ->first();
         }
         return $myRecords;
+    }
+
+    /**
+     * ワード検索時、検索の値とtitleの値で当てはまるワードだけレコードを取得。
+     */
+    public function scopeSearchTitle($query, $id)
+    {
+        if (!empty($id['search_word'])) {
+            return $query->where('title', 'LIKE', '%'.$id['search_word'].'%');
+        }
+    }
+
+    /**
+     * カテゴリー検索時に値がnullじゃなかったら引数に渡されたtag_category_idと同じレコードを取得。
+     */
+    public function scopeSearchTagCategoryId($query, $id)
+    {
+        if (!empty($id['tag_category_id'])) {
+            return $query->where('tag_category_id', 'LIKE', '%'.$id['tag_category_id'].'%');
+        }
     }
 
 }

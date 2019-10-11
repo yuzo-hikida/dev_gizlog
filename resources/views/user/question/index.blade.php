@@ -3,10 +3,10 @@
 
 <h2 class="brand-header">質問一覧</h2>
 <div class="main-wrap">
-  <form>
+  {!! Form::open(['route' => ['question.index'], 'method' => 'GET', 'id' => 'select-question']) !!}
     <div class="btn-wrapper">
       <div class="search-box">
-        <input class="form-control search-form" placeholder="Search words..." name="search_word" type="text">
+        {!! Form::text('search_word', null, ['class' => 'form-control search-form', 'placeholder' => 'Search words...']) !!}
         <button type="submit" class="search-icon"><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
       <a class="btn" href="{{ route('question.create') }}"><i class="fa fa-plus" aria-hidden="true"></i></a>
@@ -20,9 +20,9 @@
       <div class="btn back" id="2">back</div>
       <div class="btn infra" id="3">infra</div>
       <div class="btn others" id="4">others</div>
-      <input id="category-val" name="tag_category_id" type="hidden" value="">
+      {!! Form::hidden('tag_category_id', null, ['id' => 'category-val']) !!}
     </div>
-  </form>
+    {!! Form::close() !!}
   <div class="content-wrapper table-responsive">
     <table class="table table-striped">
       <thead>

@@ -27,13 +27,9 @@
     @else {
         {!! Form::open(['route' => ['question.update', $inputs['id']], 'method' => 'PUT']) !!}
     @endif
-      <!-- <input name="user_id" type="hidden" value=""> -->
       {!! Form::hidden('user_id', Auth::id()) !!}
-      <!-- <input name="tag_category_id" type="hidden" value=""> -->
       {!! Form::hidden('tag_category_id', $inputs['tag_category_id']) !!}
-      <!-- <input name="title" type="hidden" value=""> -->
       {!! Form::hidden('title', $inputs['title']) !!}
-      <!-- <input name="content" type="hidden" value=""> -->
       {!! Form::hidden('content', $inputs['content']) !!}
       <button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
     {!! Form::close() !!}
