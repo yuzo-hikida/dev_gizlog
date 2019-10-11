@@ -54,7 +54,7 @@ class Question extends Model
     {
         if (!empty($id)) {
             $myRecords = $this->where('user_id', $id)
-            ->with(['tagCategory', 'user', 'comments'])
+            ->with(['tagCategory', 'comments'])
             ->get();
         }
         return $myRecords;
