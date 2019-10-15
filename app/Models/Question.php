@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TagCategory;
 use App\Models\User;
 use App\Models\Comment;
 use App\Http\Controllers\User\QuestionController;
@@ -35,16 +34,15 @@ class Question extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
-/**
- * 質問一覧で表示するために、それぞれ絞り込みをしてレコードを取得。
- */
-    public function getQuestionRecord($questions)
+    /**
+     * 質問一覧で表示するために、それぞれ絞り込みをしてレコードを取得。
+     */
+    public function getQuestionRecord($request)
     {
-            return $this->searchTitle($questions)
-                        ->searchTagCategoryId($questions)
-                        ->orderBy('updated_at', 'desc')
-                        ->with(['tagCategory', 'user', 'comments'])
-                        ->get();
+        return $this->searchTitle($request)
+                    ->searchTagCategoryId($request)
+                    ->orderBy('updated_at', 'desc')
+                    ->with(['tagCategory', 'user', 'comments']);
     }
 
     /**
@@ -53,11 +51,9 @@ class Question extends Model
     public function selectMyRecords($id)
     {
         if (!empty($id)) {
-            $myRecords = $this->where('user_id', $id)
-            ->with(['tagCategory', 'comments'])
-            ->get();
+            return $this->where('user_id', $id)
+                        ->with(['tagCategory', 'comments']);
         }
-        return $myRecords;
     }
 
     /**
@@ -66,11 +62,10 @@ class Question extends Model
     public function selectMyRecord($id)
     {
         if (!empty($id)) {
-            $myRecords = $this->where('id', $id)
-            ->with(['tagCategory', 'user', 'comments'])
-            ->first();
+            return $this->where('id', $id)
+                        ->with(['tagCategory', 'user', 'comments'])
+                        ->first();
         }
-        return $myRecords;
     }
 
     /**

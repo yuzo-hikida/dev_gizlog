@@ -22,9 +22,9 @@
     </div>
   </div>
   <div class="btn-bottom-wrapper">
-    @if ($confirm === 'create') {
+    @if ($inputs['confirm'] === 'create')
         {!! Form::open(['route' => ['question.store']]) !!}
-    @else {
+    @else
         {!! Form::open(['route' => ['question.update', $inputs['id']], 'method' => 'PUT']) !!}
     @endif
       {!! Form::hidden('user_id', Auth::id()) !!}

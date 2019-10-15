@@ -6,7 +6,7 @@
   <div class="panel panel-success">
     <div class="panel-heading">
       <img src="@if(empty($showQuestion->user->avatar)) http://acbio2.acbio.u-fukui.ac.jp/gousei/img/image5.png @endif {{$showQuestion->user->avatar}}" class="avatar-img">
-      <p>{{ $showQuestion->user->name }}&nbsp;さんの質問&nbsp;&nbsp;({{ $tagCategoryName->name }}&nbsp;&nbsp;)&nbsp;&nbsp;{{ $showQuestion->updated_at->format('Y-m-d H:i') }}</p>
+      <p>{{ $showQuestion->user->name }}&nbsp;さんの質問&nbsp;&nbsp;({{ $showQuestion->tagCategory->name }}&nbsp;&nbsp;)&nbsp;&nbsp;{{ $showQuestion->updated_at->format('Y-m-d H:i') }}</p>
       <p class="question-date"></p>
     </div>
     <div class="table-responsive">
