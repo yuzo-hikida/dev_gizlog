@@ -118,7 +118,7 @@ class QuestionController extends Controller
     public function confirm(QuestionsRequest $request)
     {
         $inputs = $request->all();
-        $tagCategoryName = tagCategory::find($request)->first();//なんでfindの引数に数字じゃなくて＄requestを入れて値が取れるのか
+        $tagCategoryName = tagCategory::find($request)->first();
         return view('user.question.confirm', compact('inputs', 'tagCategoryName'));
     }
 
