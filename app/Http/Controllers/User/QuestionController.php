@@ -4,29 +4,31 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\QuestionsRequest;
+use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\TagCategory;
 use App\Models\Comment;
-
 
 class QuestionController extends Controller
 {
     protected $question;
     protected $comment;
+    protected $tagCategory;
 
-    public function __construct(Question $question,  Comment $comment)
+    public function __construct(Question $question,  Comment $comment, TagCategory $tagCategory)
     {
         $this->middleware('auth');
         $this->question = $question;
         $this->comment = $comment;
+        $this->tagCategory = $tagCategory;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return QuestionsRequest
+     * @return Request
      */
-    public function index(QuestionsRequest $request)
+    public function index(Request $request)
     {
         $inputs = $request->all();
         $questions = $this->question->getQuestionRecord($inputs)->paginate(10);
@@ -41,7 +43,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('user.question.create');
+        $pluckedCategories = $this->tagCategory->tagCategories();
+        return view('user.question.create', compact('pluckedCategories'));
     }
 
     /**
@@ -54,7 +57,7 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $this->question->create($inputs);
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -63,10 +66,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($userId)
     {
-        $showQuestion = $this->question->selectMyRecord($id);
-        $comments = $this->comment->selectComment($id);
+        $showQuestion = $this->question->selectMyRecord($userId);
+        $comments = $this->comment->selectComment($userId);
         return view('user.question.show',compact('showQuestion','comments'));
     }
 
@@ -79,7 +82,8 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $changeValue = $this->question->selectMyRecord($id);
-        return view('user.question.edit', compact('changeValue'));
+        $pluckedCategories = $this->tagCategory->tagCategories();
+        return view('user.question.edit', compact('changeValue', 'pluckedCategories'));
     }
 
     /**
@@ -93,7 +97,7 @@ class QuestionController extends Controller
     {
         $editRecord = $request->all();
         $this->question->find($id)->fill($editRecord)->save();
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -106,7 +110,7 @@ class QuestionController extends Controller
     {
         $this->comment->searchCommentsOfQuestion($id)->delete();
         $this->question->find($id)->delete();
-        return redirect()->to('question');
+        return redirect()->route('question.index');
     }
 
     /**
@@ -118,7 +122,7 @@ class QuestionController extends Controller
     public function confirm(QuestionsRequest $request)
     {
         $inputs = $request->all();
-        $tagCategoryName = tagCategory::find($request)->first();
+        $tagCategoryName = $this->tagCategory->find($request->tag_category_id)->name;
         return view('user.question.confirm', compact('inputs', 'tagCategoryName'));
     }
 
@@ -128,9 +132,9 @@ class QuestionController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function mypage($id)
+    public function mypage($userId)
     {
-        $myRecords = $this->question->selectMyRecords($id)->paginate(10);
+        $myRecords = $this->question->selectMyRecords($userId)->paginate(10);
         return view('user.question.mypage', compact('myRecords'));
     }
 
@@ -144,6 +148,6 @@ class QuestionController extends Controller
     {
         $inputs = $request->all();
         $this->comment->create($inputs);
-        return redirect()->to('question/'.$id);
+        return redirect()->route('question.show',$id);
     }
 }

@@ -23,9 +23,8 @@ class Comment extends Model
 
     public function selectComment($id)
     {
-        if(!empty($id)) {
-            $commentRecords = $this->where('question_id', $id)->get();
-            return $commentRecords;
+        if (!empty($id)) {
+            return $this->where('question_id', $id)->get();
         }
     }
 

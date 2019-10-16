@@ -17,10 +17,10 @@ class CreateQuestionsTables extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('tag_category_id');
-            $table->string('title', 100);
-            $table->string('content', 600);
+            $table->string('title', 1500);
+            $table->string('content', 1500);
             $table->timestamps();
-            $table->softDeletes()->nullable()->change();
+            $table->softDeletes();
         });
     }
 

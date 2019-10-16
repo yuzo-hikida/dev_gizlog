@@ -37,23 +37,24 @@ class Question extends Model
     /**
      * 質問一覧で表示するために、それぞれ絞り込みをしてレコードを取得。
      */
-    public function getQuestionRecord($request)
+    public function getQuestionRecord($data)
     {
-        return $this->searchTitle($request)
-                    ->searchTagCategoryId($request)
-                    ->orderBy('updated_at', 'desc')
-                    ->with(['tagCategory', 'user', 'comments']);
+        if (!empty($data)) {
+            $selectQuesttionRecords = $this->searchTitle($data['search_word'])
+                                            ->searchTagCategoryId($data['tag_category_id'])
+                                            ->orderBy('updated_at', 'desc');
+        } else {
+            $selectQuesttionRecords = $this->orderBy('updated_at', 'desc');
+        }
+        return $selectQuesttionRecords->with(['tagCategory', 'user', 'comments']);
     }
 
     /**
      * mypageにて自分が投稿したquestionのレコード取得。
      */
-    public function selectMyRecords($id)
+    public function selectMyRecords($userId)
     {
-        if (!empty($id)) {
-            return $this->where('user_id', $id)
-                        ->with(['tagCategory', 'comments']);
-        }
+        return $this->where('user_id', $userId)->with(['tagCategory', 'comments']);
     }
 
     /**
@@ -61,30 +62,26 @@ class Question extends Model
      */
     public function selectMyRecord($id)
     {
-        if (!empty($id)) {
-            return $this->where('id', $id)
-                        ->with(['tagCategory', 'user', 'comments'])
-                        ->first();
-        }
+        return $this->where('id', $id)->with(['tagCategory', 'user', 'comments'])->first();
     }
 
     /**
      * ワード検索時、検索の値とtitleの値で当てはまるワードだけレコードを取得。
      */
-    public function scopeSearchTitle($query, $id)
+    public function scopeSearchTitle($query, $searchWord)
     {
-        if (!empty($id['search_word'])) {
-            return $query->where('title', 'LIKE', '%'.$id['search_word'].'%');
+        if (!empty($searchWord)) {
+            return $query->where('title', 'LIKE', '%'.$searchWord.'%');
         }
     }
 
     /**
      * カテゴリー検索時に値がnullじゃなかったら引数に渡されたtag_category_idと同じレコードを取得。
      */
-    public function scopeSearchTagCategoryId($query, $id)
+    public function scopeSearchTagCategoryId($query, $tagCategoryId)
     {
-        if (!empty($id['tag_category_id'])) {
-            return $query->where('tag_category_id', 'LIKE', '%'.$id['tag_category_id'].'%');
+        if (!empty($tagCategoryId)) {
+            return $query->where('tag_category_id', 'LIKE', '%'.$tagCategoryId.'%');
         }
     }
 

@@ -19,5 +19,10 @@ class TagCategory extends Model
     {
         return $this->hasMany('App\Models\Question');
     }
+
+    public function tagCategories()
+    {
+        return $this->all()->pluck('name', 'id')->prepend('select Category', '');
+    }
 }
 
