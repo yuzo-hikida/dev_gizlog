@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\CommentRequest;
 use App\Http\Requests\User\QuestionsRequest;
-use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\TagCategory;
 use App\Models\Comment;
@@ -26,9 +26,9 @@ class QuestionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Request
+     * @return QuestionsRequest
      */
-    public function index(Request $request)
+    public function index(QuestionsRequest $request)
     {
         $inputs = $request->all();
         $questions = $this->question->getQuestionRecord($inputs)->paginate(10);
@@ -66,11 +66,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($userId)
+    public function show($id)
     {
-        $showQuestion = $this->question->selectMyRecord($userId);
-        $comments = $this->comment->selectComment($userId);
-        return view('user.question.show',compact('showQuestion','comments'));
+        $showQuestion = $this->question->selectMyRecord($id);
+        return view('user.question.show',compact('showQuestion'));
     }
 
     /**
@@ -89,8 +88,8 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  QuestionsRequest  $request
      * @param  int  $id
+     * @param  QuestionsRequest  $request
      * @return QuestionsRequest
      */
     public function update(QuestionsRequest $request, $id)
@@ -116,7 +115,7 @@ class QuestionController extends Controller
     /**
      * confirm a newly created resource in storage.
      *
-     * @param  QuestionsRequest;  $request
+     * @param  QuestionsRequest  $request
      * @return QuestionsRequest
      */
     public function confirm(QuestionsRequest $request)
@@ -141,10 +140,11 @@ class QuestionController extends Controller
     /**
      * commentStore a newly created resource in storage.
      *
-     * @param  QuestionsRequest;  $request
-     * @return QuestionsRequest
+     * @param  int $id
+     * @param  CommentRequest $request
+     * @return CommentRequest
      */
-    public function commentStore(QuestionsRequest $request ,$id)
+    public function commentStore(CommentRequest $request ,$id)
     {
         $inputs = $request->all();
         $this->comment->create($inputs);

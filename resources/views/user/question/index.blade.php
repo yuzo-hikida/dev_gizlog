@@ -20,7 +20,7 @@
       <div class="btn back" id="2">back</div>
       <div class="btn infra" id="3">infra</div>
       <div class="btn others" id="4">others</div>
-      {!! Form::hidden('tag_category_id', null, ['id' => 'category-val']) !!}
+      {!! Form::hidden('category_id', null, ['id' => 'category-val']) !!}
     </div>
     {!! Form::close() !!}
   <div class="content-wrapper table-responsive">
@@ -42,7 +42,7 @@
           <td class="col-xs-6">{{ mb_strimwidth($question->title, 0, 50, '...', 'UTF-8') }}</td>
           <td class="col-xs-1"><span class="point-color">{{ $question->comments->count() }}</span></td>
           <td class="col-xs-2">
-            <a class="btn btn-success" href="question/{{ $question->id }}">
+            <a class="btn btn-success" href="{{ route('question.show',$question->id) }}">
               <i class="fa fa-comments-o" aria-hidden="true"></i>
             </a>
           </td>

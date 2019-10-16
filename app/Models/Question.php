@@ -4,19 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Comment;
-use App\Http\Controllers\User\QuestionController;
 
 class Question extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'tag_category_id',
         'title',
         'content',
-        'user_id',
     ];
 
     public function tagCategory()
@@ -39,14 +36,14 @@ class Question extends Model
      */
     public function getQuestionRecord($data)
     {
+        // dd($data);
         if (!empty($data)) {
-            $selectQuesttionRecords = $this->searchTitle($data['search_word'])
-                                            ->searchTagCategoryId($data['tag_category_id'])
-                                            ->orderBy('updated_at', 'desc');
-        } else {
-            $selectQuesttionRecords = $this->orderBy('updated_at', 'desc');
+            return $this->searchTitle($data['search_word'])
+                        ->searchTagCategoryId($data['category_id'])
+                        ->orderBy('updated_at', 'desc')
+                        ->with(['tagCategory', 'user', 'comments']);
         }
-        return $selectQuesttionRecords->with(['tagCategory', 'user', 'comments']);
+        return $this->orderBy('updated_at', 'desc')->with(['tagCategory', 'user', 'comments']);
     }
 
     /**
@@ -62,7 +59,7 @@ class Question extends Model
      */
     public function selectMyRecord($id)
     {
-        return $this->where('id', $id)->with(['tagCategory', 'user', 'comments'])->first();
+        return $this->with(['tagCategory', 'user'])->find($id);
     }
 
     /**
@@ -81,7 +78,7 @@ class Question extends Model
     public function scopeSearchTagCategoryId($query, $tagCategoryId)
     {
         if (!empty($tagCategoryId)) {
-            return $query->where('tag_category_id', 'LIKE', '%'.$tagCategoryId.'%');
+            return $query->where('tag_category_id', $tagCategoryId);
         }
     }
 

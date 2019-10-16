@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Question;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
@@ -19,13 +18,6 @@ class Comment extends Model
     public function question()
     {
         return belongsTo('App\Models\Question');
-    }
-
-    public function selectComment($id)
-    {
-        if (!empty($id)) {
-            return $this->where('question_id', $id)->get();
-        }
     }
 
     public function scopeSearchCommentsOfQuestion($query, $id)
