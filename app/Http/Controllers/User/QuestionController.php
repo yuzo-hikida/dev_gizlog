@@ -5,9 +5,11 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CommentRequest;
 use App\Http\Requests\User\QuestionsRequest;
+use App\Http\Requests\User\QuestionSearchRequest;
 use App\Models\Question;
 use App\Models\TagCategory;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -26,14 +28,15 @@ class QuestionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return QuestionsRequest
+     * @return QuestionSearchRequest
      */
-    public function index(QuestionsRequest $request)
+    public function index(QuestionSearchRequest $request)
     {
         $inputs = $request->all();
-        $questions = $this->question->getQuestionRecord($inputs)->paginate(10);
-        $request->flashOnly(['search_word']);
-        return view('user.question.index', compact('questions'));
+        $questions = $this->question->getQuestions($inputs);
+        $tagCategories = $this->tagCategory->tagCategories();
+        $request->flash();
+        return view('user.question.index', compact('questions', 'tagCategories'));
     }
 
     /**
@@ -43,7 +46,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $pluckedCategories = $this->tagCategory->tagCategories();
+        $pluckedCategories = $this->tagCategory->tagCategories()->pluck('name', 'id')->prepend('select Category', '');
         return view('user.question.create', compact('pluckedCategories'));
     }
 
@@ -56,6 +59,7 @@ class QuestionController extends Controller
     public function store(QuestionsRequest $request)
     {
         $inputs = $request->all();
+        $inputs['user_id'] = Auth::id();
         $this->question->create($inputs);
         return redirect()->route('question.index');
     }
@@ -81,7 +85,7 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $changeValue = $this->question->selectMyRecord($id);
-        $pluckedCategories = $this->tagCategory->tagCategories();
+        $pluckedCategories = $this->tagCategory->tagCategories()->pluck('name', 'id')->prepend('select Category', '');
         return view('user.question.edit', compact('changeValue', 'pluckedCategories'));
     }
 
@@ -95,6 +99,7 @@ class QuestionController extends Controller
     public function update(QuestionsRequest $request, $id)
     {
         $editRecord = $request->all();
+        $editRecord['user_id'] = Auth::id();
         $this->question->find($id)->fill($editRecord)->save();
         return redirect()->route('question.index');
     }
@@ -133,7 +138,7 @@ class QuestionController extends Controller
      */
     public function mypage($userId)
     {
-        $myRecords = $this->question->selectMyRecords($userId)->paginate(10);
+        $myRecords = $this->question->selectMyRecords($userId);
         return view('user.question.mypage', compact('myRecords'));
     }
 
@@ -144,9 +149,10 @@ class QuestionController extends Controller
      * @param  CommentRequest $request
      * @return CommentRequest
      */
-    public function commentStore(CommentRequest $request ,$id)
+    public function storeComment(CommentRequest $request ,$id)
     {
         $inputs = $request->all();
+        $inputs['user_id'] = Auth::id();
         $this->comment->create($inputs);
         return redirect()->route('question.show',$id);
     }

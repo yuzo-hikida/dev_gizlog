@@ -20,7 +20,7 @@ class TagCategory extends Model
 
     public function tagCategories()
     {
-        return $this->all()->pluck('name', 'id')->prepend('select Category', '');
+        return $this->all();
     }
 }
 

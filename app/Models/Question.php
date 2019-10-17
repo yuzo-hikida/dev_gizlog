@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Question extends Model
 {
@@ -34,16 +35,13 @@ class Question extends Model
     /**
      * 質問一覧で表示するために、それぞれ絞り込みをしてレコードを取得。
      */
-    public function getQuestionRecord($data)
+    public function getQuestions($data)
     {
-        // dd($data);
-        if (!empty($data)) {
-            return $this->searchTitle($data['search_word'])
-                        ->searchTagCategoryId($data['category_id'])
+            return $this->searchTitle(Arr::get($data,'search_word'))
+                        ->searchTagCategoryId(Arr::get($data, 'search_category_id'))
                         ->orderBy('updated_at', 'desc')
-                        ->with(['tagCategory', 'user', 'comments']);
-        }
-        return $this->orderBy('updated_at', 'desc')->with(['tagCategory', 'user', 'comments']);
+                        ->with(['tagCategory', 'user', 'comments'])
+                        ->paginate(10);
     }
 
     /**
@@ -51,7 +49,9 @@ class Question extends Model
      */
     public function selectMyRecords($userId)
     {
-        return $this->where('user_id', $userId)->with(['tagCategory', 'comments']);
+        return $this->where('user_id', $userId)
+                    ->with(['tagCategory', 'comments'])
+                    ->paginate(10);
     }
 
     /**
