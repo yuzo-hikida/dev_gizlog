@@ -9,6 +9,7 @@ use App\Http\Requests\User\QuestionSearchRequest;
 use App\Models\Question;
 use App\Models\TagCategory;
 use App\Models\Comment;
+use App\Providers\QuestionServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
@@ -126,7 +127,8 @@ class QuestionController extends Controller
     public function confirm(QuestionsRequest $request)
     {
         $inputs = $request->all();
-        $tagCategoryName = $this->tagCategory->find($request->tag_category_id)->name;
+        $serviceClass = app()->make(QuestionServiceProvider::class);
+        $tagCategoryName = $serviceClass->selectTagCategoryName($request->tag_category_id);
         return view('user.question.confirm', compact('inputs', 'tagCategoryName'));
     }
 

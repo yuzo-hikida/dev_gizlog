@@ -161,6 +161,11 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         App\Socialite\SocialiteServiceProvider::class,
+
+        /**
+         * Debugbar
+         */
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -214,6 +219,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Carbon' => Carbon\Carbon::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

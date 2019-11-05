@@ -37,11 +37,12 @@ class Question extends Model
      */
     public function getQuestions($data)
     {
-            return $this->searchTitle(Arr::get($data,'search_word'))
-                        ->searchTagCategoryId(Arr::get($data, 'search_category_id'))
-                        ->orderBy('updated_at', 'desc')
-                        ->with(['tagCategory', 'user', 'comments'])
-                        ->paginate(10);
+        // dd($this->get());
+        return $this->searchTitle(Arr::get($data,'search_word'))
+                    ->searchTagCategoryId(Arr::get($data, 'search_category_id'))
+                    ->orderBy('updated_at', 'desc')
+                    ->with(['tagCategory', 'user', 'comments'])
+                    ->paginate(10);
     }
 
     /**
