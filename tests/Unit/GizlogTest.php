@@ -2,29 +2,37 @@
 
 namespace Tests\Unit;
 
+use App\Models\Comment;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Question;
-use App\Http\Requests\User\QuestionSearchRequest;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\TagCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 
 class GizlogTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    use RefreshDatabase;
+
+    public function setUp()
     {
-        $this->assertTrue(true);
+        parent::setUp();
+
+        $categories = factory(TagCategory::class, 4)->create();
+        factory(User::class, 4)->create()->each(function ($user) use ($categories) {
+            factory(Question::class, 3)
+                ->create([
+                    'user_id' => $user->id,
+                    'tag_category_id' => $categories->random()->id
+                ])
+                ->each(function ($question) {
+                    factory(Comment::class, 5)->create(['question_id' => $question->id]);
+                });
+        });
     }
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make(['id' => 4]); //保存しない
         $response = $this->actingAs($user)->get(route('question.index'));
 
         $response->assertStatus(200);

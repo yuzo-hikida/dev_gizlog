@@ -36,7 +36,6 @@ class QuestionController extends Controller
         $inputs = $request->all();
         $questions = $this->question->getQuestions($inputs);
         $tagCategories = $this->tagCategory->tagCategories();
-        $request->flash();
         return view('user.question.index', compact('questions', 'tagCategories'));
     }
 

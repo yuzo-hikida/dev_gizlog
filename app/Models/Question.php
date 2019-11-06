@@ -8,6 +8,8 @@ use Illuminate\Support\Arr;
 
 class Question extends Model
 {
+    const PER_PAGE = 10; //ここで定義することで変更に強くなる。
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -37,12 +39,11 @@ class Question extends Model
      */
     public function getQuestions($data)
     {
-        // dd($this->get());
         return $this->searchTitle(Arr::get($data,'search_word'))
                     ->searchTagCategoryId(Arr::get($data, 'search_category_id'))
                     ->orderBy('updated_at', 'desc')
                     ->with(['tagCategory', 'user', 'comments'])
-                    ->paginate(10);
+                    ->paginate(self::PER_PAGE);
     }
 
     /**
@@ -52,7 +53,7 @@ class Question extends Model
     {
         return $this->where('user_id', $userId)
                     ->with(['tagCategory', 'comments'])
-                    ->paginate(10);
+                    ->paginate(self::PER_PAGE);
     }
 
     /**
