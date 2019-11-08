@@ -38,6 +38,7 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::post('question/{id}/comment', ['as' => 'question.comment', 'uses' => 'QuestionController@storeComment']);
     Route::resource('question', QuestionController::class);
 
+    Route::get('attendance/absence', 'AttendanceController@absence')->name('attendance.absence');
     Route::resource('attendance', AttendanceController::class);
 
     /* 

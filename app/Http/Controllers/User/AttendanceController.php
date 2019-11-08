@@ -3,10 +3,20 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
+use App\Models\Attendance;
 use App\Http\Controllers\Controller;
+use App\Providers\AttendancesServiceProvider;
 
 class AttendanceController extends Controller
 {
+    protected $attendance;
+
+    public function __construct(Attendance $attendance)
+    {
+        $this->middleware('auth');
+        $this->attendance = $attendance;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,8 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $attendanceStatus = $this->attendance->discriminationAttend();
+        return view('user.attendance.index', compact('attendanceStatus'));
     }
 
     /**
@@ -35,7 +46,8 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $startTime = $this->attendance->saveStartTime();
+        return redirect()->route('attendance.index');
     }
 
     /**
@@ -69,7 +81,8 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->attendance->saveEndTime($id);
+        return redirect()->route('attendance.index');
     }
 
     /**
@@ -81,5 +94,13 @@ class AttendanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * 欠席登録
+     */
+    public function absence()
+    {
+        // return view('user.attendance.')
     }
 }
