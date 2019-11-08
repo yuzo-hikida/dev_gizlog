@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\User\AbsenceRequest;
 use App\Models\Attendance;
 use App\Http\Controllers\Controller;
 use App\Providers\AttendancesServiceProvider;
@@ -97,10 +98,20 @@ class AttendanceController extends Controller
     }
 
     /**
-     * 欠席登録
+     * 欠席登録ページ遷移
      */
     public function absence()
     {
-        // return view('user.attendance.')
+        return view('user.attendance.absence');
+    }
+
+    /**
+     * 欠席登録
+     */
+    public function absenceRegistration(AbsenceRequest $request)
+    {
+        $absenceComment = $request->all();
+        $this->attendance->saveAbsence($absenceComment);
+        return redirect()->route('attendance.index');
     }
 }

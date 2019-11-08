@@ -39,9 +39,10 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::resource('question', QuestionController::class);
 
     Route::get('attendance/absence', 'AttendanceController@absence')->name('attendance.absence');
+    Route::post('attendance/absenceRegistration', 'AttendanceController@absenceRegistration')->name('attendance.absenceRegistration');
     Route::resource('attendance', AttendanceController::class);
 
-    /* 
+    /*
      * ----------------------------------------------------------
      * 静的なページが簡単に確認できるように ClosureでViewを返しています。処理に応じて編集してください。
      * 尚、このコメントアウトはコード提出の際は削除してください。
