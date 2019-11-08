@@ -69,24 +69,32 @@ class Attendance extends Model
         $attendanceRecord = $this->where('reporting_time', $dt)->first();
 
         if (empty($attendanceRecord)) {
-            $absence = [];
-            $absence['user_id'] = Auth::id();
-            $absence['absence_comment'] = $absenceComment['absence_comment'];
-            $absence['reporting_time'] = $this->data()->format('Y-m-d');
-            return $this->create($absence);
-        } elseif (isset($attendanceRecord['start_time']) && empty($attendanceRecord['end_time'])) {
-            $dt = [];
-            $dt['absence_comment'] = $absenceComment['absence_comment'];
-            $dt['start_time'] = null;
-            $id = $attendanceRecord['id'];
-            return $this->find($id)->fill($dt)->save();
-        } elseif (isset($attendanceRecord['start_time']) && isset($attendanceRecord['end_time'])) {
-            $dt = [];
-            $dt['absence_comment'] = $absenceComment['absence_comment'];
-            $dt['start_time'] = null;
-            $dt['end_time'] = null;
-            $id = $attendanceRecord['id'];
-            return $this->find($id)->fill($dt)->save();
+            $this->createAttendance($absenceComment);
         }
+
+        if (isset($attendanceRecord)) {
+            $this->updateAttendance($attendanceRecord, $absenceComment);
+        }
+
     }
+
+    public function createAttendance($data)
+    {
+        return $this->create([
+            'user_id' => Auth::id(),
+            'absence_comment' => $data['absence_comment'],
+            'reporting_time' => $this->data()->format('Y-m-d'),
+        ]);
+    }
+
+    public function updateAttendance($data, $comment)
+    {
+        $id = $data['id'];
+        return $this->where('id', $id)->update([
+            'absence_comment' => $comment['absence_comment'],
+            'start_time' => null,
+            'end_time' => null,
+        ]);
+    }
+
 }
