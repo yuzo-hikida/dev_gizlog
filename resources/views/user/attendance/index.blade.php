@@ -16,21 +16,21 @@
       <a class="button
         @if (empty($attendanceStatus))
           start-btn
-        @elseif (isset($attendanceStatus['start_time']) && empty($attendanceStatus['end_time']))
-          end-btn
-        @elseif (isset($attendanceStatus['start_time']) && isset($attendanceStatus['end_time']))
+        @elseif (empty($attendanceStatus['start_time']))
           disabled
-        @elseif (empty($attendanceStatus['start_time']) && empty($attendanceStatus['end_time']))
+        @elseif (empty($attendanceStatus['end_time']))
+          end-btn
+        @else
           disabled
         @endif" id="register-attendance" href=#openModal>
         @if (empty($attendanceStatus))
             {{ '出社時間登録' }}
-          @elseif (isset($attendanceStatus['start_time']) && empty($attendanceStatus['end_time']))
-            {{'退勤時間登録'}}
-          @elseif (isset($attendanceStatus['start_time']) && isset($attendanceStatus['end_time']))
-            {{'退勤済み'}}
-          @elseif (empty($attendanceStatus['start_time']) && empty($attendanceStatus['end_time']))
+          @elseif (empty($attendanceStatus['start_time']))
             {{'欠席'}}
+          @elseif (empty($attendanceStatus['end_time']))
+            {{'退勤時間登録'}}
+          @else
+            {{'退社済み'}}
           @endif
       </a>
   </div>
@@ -42,7 +42,7 @@
       <a class="at-btn modify" href="/attendance/modify">修正申請</a>
     </li>
     <li>
-      <a class="at-btn my-list" href="/attendance/mypage">マイページ</a>
+      <a class="at-btn my-list" href="{{ route('attendance.mypage') }}">マイページ</a>
     </li>
   </ul>
 </div>

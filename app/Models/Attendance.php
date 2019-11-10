@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Model
 {
@@ -19,10 +20,17 @@ class Attendance extends Model
     ];
 
     protected $dates = [
+        'start_time',
+        'end_time',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 
     protected function data()
     {
@@ -34,11 +42,11 @@ class Attendance extends Model
      */
     public function saveStartTime()
     {
-        $dt = [];
-        $dt['user_id'] = Auth::id();
-        $dt['start_time'] = $this->data()->format('Y-m-d H:m:s');
-        $dt['reporting_time'] = $this->data()->format('Y-m-d');
-        return $this->create($dt);
+        return $this->create([
+            'user_id' => Auth::id(),
+            'start_time' => $this->data()->format('Y-m-d H:m:s'),
+            'reporting_time' => $this->data()->format('Y-m-d'),
+        ]);
     }
 
     /**
@@ -68,10 +76,16 @@ class Attendance extends Model
         $dt = $this->data()->format('Y-m-d');
         $attendanceRecord = $this->where('reporting_time', $dt)->first();
 
+        /**
+         * 出社していない人の処理
+         */
         if (empty($attendanceRecord)) {
             $this->createAttendance($absenceComment);
         }
 
+        /**
+         * 出社した人の変更処理
+         */
         if (isset($attendanceRecord)) {
             $this->updateAttendance($attendanceRecord, $absenceComment);
         }
@@ -95,6 +109,25 @@ class Attendance extends Model
             'start_time' => null,
             'end_time' => null,
         ]);
+    }
+
+    public function getMyRecords()
+    {
+        return $this->all();
+    }
+
+    public function getCumulativeTime()
+    {
+        $dts = $this->where('end_time', '!=', Null)->get();
+        $totalTime = 0;
+
+        foreach ($dts as $dt) {
+            $endTime = $dt->end_time;
+            $startTime = $dt->start_time;
+
+            $totalTime += $endTime->diffInHours($startTime);
+        }
+        return $totalTime;
     }
 
 }

@@ -21,7 +21,7 @@ class CreateAttendanceTable extends Migration
             $table->string('correction_comment', 600)->nullable();
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
-            $table->date('reporting_time')->nullable();
+            $table->date('reporting_time');
             $table->timestamps();
             $table->softDeletes();
         });

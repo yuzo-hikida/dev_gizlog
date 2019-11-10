@@ -114,4 +114,14 @@ class AttendanceController extends Controller
         $this->attendance->saveAbsence($absenceComment);
         return redirect()->route('attendance.index');
     }
+
+    /**
+     * mypageページ遷移
+     */
+    public function mypage()
+    {
+        $myRecords = $this->attendance->getMyRecords();
+        $cumulativeTime = $this->attendance->getCumulativeTime();
+        return view('user.attendance.mypage', compact('myRecords', 'cumulativeTime'));
+    }
 }
