@@ -15,15 +15,4 @@ class AttendancesServiceProvider extends ServiceProvider
         $this->attendance = $attendance;
     }
 
-    /**
-     * 出社しているかの有無を確認する。
-     */
-    public function discriminationAttend()
-    {
-        $attendance = $this->attendance->get();
-        dd($attendance);
-        // if (empty($attendance['start_time']) && empty($attendance['end_time'])) {
-
-        // }
-    }
 }

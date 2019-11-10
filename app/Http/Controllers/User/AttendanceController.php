@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\User\AbsenceRequest;
 use App\Models\Attendance;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ModifyRequest;
 use App\Providers\AttendancesServiceProvider;
 
 class AttendanceController extends Controller
@@ -123,5 +124,24 @@ class AttendanceController extends Controller
         $myRecords = $this->attendance->getMyRecords();
         $cumulativeTime = $this->attendance->getCumulativeTime();
         return view('user.attendance.mypage', compact('myRecords', 'cumulativeTime'));
+    }
+
+    /**
+     * 編集画面遷移
+     */
+    public function modify()
+    {
+        return view('user.attendance.modify');
+    }
+
+    /**
+     * 修正登録
+     * @rreturn 一覧画面
+     */
+    public function correctionRegistration(ModifyRequest $request)
+    {
+        $correctionDate = $request->all();
+        $this->attendance->saveCorrectionDate($correctionDate);
+        return redirect()->route('attendance.index');
     }
 }

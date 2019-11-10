@@ -111,11 +111,18 @@ class Attendance extends Model
         ]);
     }
 
+    /**
+     * 自分のレコード全取得
+     */
     public function getMyRecords()
     {
         return $this->all();
     }
 
+    /**
+     * 累計時間の計算
+     * @return 累計時間
+     */
     public function getCumulativeTime()
     {
         $dts = $this->where('end_time', '!=', Null)->get();
@@ -128,6 +135,20 @@ class Attendance extends Model
             $totalTime += $endTime->diffInHours($startTime);
         }
         return $totalTime;
+    }
+
+    /**
+     * 修正データ保存処理
+     */
+    public function saveCorrectionDate($correctionDate)
+    {
+        $date = $correctionDate['date'];
+        $correctionMyRecord = $this->where('reporting_time', $date)->first();
+        $id = $correctionMyRecord['id'];
+        $dt = [];
+        $dt['correction_comment'] = $correctionDate['correction_comment'];
+        $dt['is_request'] = 1;
+        return $this->find($id)->fill($dt)->save();
     }
 
 }

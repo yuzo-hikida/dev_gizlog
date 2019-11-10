@@ -40,27 +40,6 @@
         <td class="col-xs-2">@if (!empty($myRecord->is_request)) {{'申請中'}} @else {{'-'}} @endif</td>
       </tr>
       @endforeach
-      <!-- <tr class="row absent-row">
-        <td class="col-xs-2">07/02 (Tue)</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-2">欠席</td>
-        <td class="col-xs-2">-</td>
-      </tr>
-      <tr class="row">
-        <td class="col-xs-2">07/03 (Wed)</td>
-        <td class="col-xs-3">10:44</td>
-        <td class="col-xs-3">19:37</td>
-        <td class="col-xs-2">出社</td>
-        <td class="col-xs-2">申請中</td>
-      </tr>
-      <tr class="row">
-        <td class="col-xs-2">07/04 (Thr)</td>
-        <td class="col-xs-3">08:52</td>
-        <td class="col-xs-3">-</td>
-        <td class="col-xs-2">研修中</td>
-        <td class="col-xs-2">-</td>
-      </tr> -->
       </tbody>
     </table>
   </div>
