@@ -54,11 +54,11 @@
       @if (empty($attendanceStatus))
         {!! Form::open(['route' => 'attendance.store']) !!}
       @elseif (isset($attendanceStatus['start_time']) && empty($attendanceStatus['end_time']))
-      {!! Form::open(['route' => ['attendance.update', $attendanceStatus['id']], 'method' => 'PUT']) !!}
+        {!! Form::open(['route' => ['attendance.update', $attendanceStatus['id']], 'method' => 'PUT']) !!}
       @endif
-        <a href="#close" class="cancel-btn">Cancel</a>
-        {!! Form::submit('Yes', ['class' => 'yes-btn'])!!}
-      {!! Form::close() !!}
+          <a href="#close" class="cancel-btn">Cancel</a>
+          {!! Form::submit('Yes', ['class' => 'yes-btn'])!!}
+        {!! Form::close() !!}
     </div>
   </div>
 </div>

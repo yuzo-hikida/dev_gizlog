@@ -45,27 +45,6 @@ Route::group(['prefix' => '/', 'user.', 'namespace' => 'User'], function () {
     Route::post('attendance/correctionRegistration', 'AttendanceController@correctionRegistration')->name('attendance.correctionRegistration');
     Route::resource('attendance', AttendanceController::class);
 
-    /*
-     * ----------------------------------------------------------
-     * 静的なページが簡単に確認できるように ClosureでViewを返しています。処理に応じて編集してください。
-     * 尚、このコメントアウトはコード提出の際は削除してください。
-     */
-    // Route::get('attendance', function () {
-    //     return view('user.attendance.index');
-    // });
-    // Route::get('attendance/absence', function () {
-    //     return view('user.attendance.absence');
-    // });
-    // Route::get('attendance/modify', function () {
-    //     return view('user.attendance.modify');
-    // });
-    // Route::get('attendance/mypage', function () {
-    //     return view('user.attendance.mypage');
-    // });
-    /*
-     * ---------------------------------------------------------
-     */
-
 });
 
 
@@ -77,27 +56,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.' ,'namespace' => 'Admin'], fu
     Route::post('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
-
-    /* 
-     * ----------------------------------------------------------
-     * 静的なページが簡単に確認できるように ClosureでViewを返しています。処理に応じて編集してください。
-     * 尚、このコメントアウトはコード提出の際は削除してください。
-     */
-    Route::get('attendance', function () {
-        return view('admin.attendance.index');
-    });
-    Route::get('attendance/create', function () {
-        return view('admin.attendance.create');
-    });
-    Route::get('attendance/edit', function () {
-        return view('admin.attendance.edit');
-    });
-    Route::get('attendance/user', function () {
-        return view('admin.attendance.user');
-    });
-    /*
-     * ---------------------------------------------------------
-     */
 
     Route::get('report', function () {
         abort(404);

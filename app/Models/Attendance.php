@@ -89,7 +89,6 @@ class Attendance extends Model
         if (isset($attendanceRecord)) {
             $this->updateAttendance($attendanceRecord, $absenceComment);
         }
-
     }
 
     public function createAttendance($data)
@@ -131,7 +130,6 @@ class Attendance extends Model
         foreach ($dts as $dt) {
             $endTime = $dt->end_time;
             $startTime = $dt->start_time;
-
             $totalTime += $endTime->diffInHours($startTime);
         }
         return $totalTime;
