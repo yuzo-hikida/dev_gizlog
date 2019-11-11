@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Model
 {

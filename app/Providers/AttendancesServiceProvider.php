@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models;
 use App\Models\Attendance;
 
 class AttendancesServiceProvider extends ServiceProvider
