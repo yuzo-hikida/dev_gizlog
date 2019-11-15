@@ -8,7 +8,7 @@
       <p>学習経過日数</p>
       <div class="study-hour-box clearfix">
         <div class="userinfo-box"><img src= "{{$myRecords->first()->user->avatar ?? 'https://c.tipsfound.com/windows10/02014/8.png'}}"></div>
-        <p class="study-hour"><span>{{ $myRecords->where('end_time','!=',  Null)->count() }}</span>{{'日'}}</p>
+        <p class="study-hour"><span>{{ $cumulativeDay }}</span>{{'日'}}</p>
       </div>
     </div>
     <div class="my-info">

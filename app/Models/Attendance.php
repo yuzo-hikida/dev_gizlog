@@ -135,6 +135,15 @@ class Attendance extends Model
     }
 
     /**
+     * 累計日付
+     * @ return 累計日付
+     */
+    public function getCumulativeDay()
+    {
+        return $this->where('end_time','!=',  Null)->count();
+    }
+
+    /**
      * 修正データ保存処理
      */
     public function saveCorrectionDate($correctionDate)

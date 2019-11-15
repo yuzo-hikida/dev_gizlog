@@ -123,7 +123,8 @@ class AttendanceController extends Controller
     {
         $myRecords = $this->attendance->getMyRecords();
         $cumulativeTime = $this->attendance->getCumulativeTime();
-        return view('user.attendance.mypage', compact('myRecords', 'cumulativeTime'));
+        $cumulativeDay = $this->attendance->getCumulativeDay();
+        return view('user.attendance.mypage', compact('myRecords', 'cumulativeTime', 'cumulativeDay'));
     }
 
     /**
